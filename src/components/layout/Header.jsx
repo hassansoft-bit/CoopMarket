@@ -20,11 +20,16 @@ export default function Header() {
                 </div>
 
                 <nav className={styles.nav}>
-                    <Link to="/auth" className={styles.navLink}>
-                        <User size={20} />
-                        <span>Login</span>
-                    </Link>
-                    <Link to="/dashboard" className={`btn btn-primary ${styles.postBtn}`}>
+                    <div className={styles.authButtons}>
+                        <Link to="/login" className={styles.loginBtn}>
+                            <User size={20} />
+                            <span>Login</span>
+                        </Link>
+                        <Link to="/signup" className={styles.signupBtn}>
+                            Sign Up
+                        </Link>
+                    </div>
+                    <Link to="/post-ad" className={`btn btn-primary ${styles.postBtn}`}>
                         <PlusCircle size={18} style={{ marginRight: '0.5rem' }} />
                         Post Ad
                     </Link>

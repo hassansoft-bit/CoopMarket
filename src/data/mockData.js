@@ -8,7 +8,7 @@ export const categories = [
     { id: 'rugs', name: 'Carpets & Rugs', icon: 'Layers' },
     { id: 'pottery', name: 'Pottery', icon: 'Cpu' }, // Cpu as placeholder, will use Lucide icons dynamically
     { id: 'spices', name: 'Spices', icon: 'Sun' },
-    { id: 'clothing', name: 'Clothing', icon: 'Shirt' },
+    
 ];
 
 export const cities = ['Agadir', 'Marrakech', 'Casablanca', 'Fes', 'Essaouira', 'Tangier'];

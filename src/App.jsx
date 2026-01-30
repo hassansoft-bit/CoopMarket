@@ -4,7 +4,9 @@ import Home from './pages/Home';
 import SearchPage from './pages/SearchPage';
 import ProductDetail from './pages/ProductDetail';
 import Dashboard from './pages/Dashboard';
-import Login from './pages/Auth'; // Combining Login/Register logic in one Auth page or separate
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import PostAd from './pages/PostAd';
 import './App.css';
 
 // Placeholder components during setup
@@ -27,6 +29,8 @@ function App() {
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/post-ad" element={<PostAd />} />
             <Route path="*" element={<Placeholder title="404 - Not Found" />} />
           </Routes>
         </main>

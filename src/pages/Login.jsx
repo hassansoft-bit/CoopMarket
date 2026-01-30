@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { useLanguage } from '../context/LanguageContext';
 import { Mail, Lock, Facebook, Chrome } from 'lucide-react';
 import styles from './Login.module.css';
 
 export default function Login() {
+    const navigate = useNavigate();
+    const { login } = useAuth();
+    const { t } = useLanguage();
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -21,20 +26,22 @@ export default function Login() {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('Login attempt:', formData);
-        // Add authentication logic here
+        // Simulate successful login
+        login({ name: 'Hassan Store', email: formData.email });
+        navigate('/dashboard');
     };
 
     return (
         <div className={styles.container}>
             <div className={styles.card}>
                 <div className={styles.header}>
-                    <h1 className={styles.title}>Welcome Back</h1>
-                    <p className={styles.subtitle}>Please enter your details to sign in</p>
+                    <h1 className={styles.title}>{t('welcome_back')}</h1>
+                    <p className={styles.subtitle}>{t('signin_subtitle')}</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <div className={styles.inputGroup}>
-                        <label htmlFor="email" className={styles.label}>Email Address</label>
+                        <label htmlFor="email" className={styles.label}>{t('email_label')}</label>
                         <input
                             type="email"
                             id="email"
@@ -42,13 +49,13 @@ export default function Login() {
                             value={formData.email}
                             onChange={handleChange}
                             className={styles.input}
-                            placeholder="Enter your email"
+                            placeholder={t('enter_email')}
                             required
                         />
                     </div>
 
                     <div className={styles.inputGroup}>
-                        <label htmlFor="password" className={styles.label}>Password</label>
+                        <label htmlFor="password" className={styles.label}>{t('password_label')}</label>
                         <input
                             type="password"
                             id="password"
@@ -56,7 +63,7 @@ export default function Login() {
                             value={formData.password}
                             onChange={handleChange}
                             className={styles.input}
-                            placeholder="Enter your password"
+                            placeholder={t('enter_password')}
                             required
                         />
                     </div>
@@ -69,20 +76,20 @@ export default function Login() {
                                 checked={formData.rememberMe}
                                 onChange={handleChange}
                             />
-                            Remember me
+                            {t('remember_me')}
                         </label>
                         <Link to="/forgot-password" className={styles.link}>
-                            Forgot password?
+                            {t('forgot_password')}
                         </Link>
                     </div>
 
                     <button type="submit" className={styles.submitButton}>
-                        Sign in
+                        {t('sign_in')}
                     </button>
                 </form>
 
                 <div className={styles.divider}>
-                    <span>Or continue with</span>
+                    <span>{t('or_continue_with')}</span>
                 </div>
 
                 <div className={styles.socialLogin}>
@@ -97,9 +104,9 @@ export default function Login() {
                 </div>
 
                 <div className={styles.footer}>
-                    Don't have an account?{' '}
+                    {t('dont_have_account')}{' '}
                     <Link to="/signup" className={styles.link}>
-                        Sign up
+                        {t('signup')}
                     </Link>
                 </div>
             </div>

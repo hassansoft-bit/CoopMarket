@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { useLanguage } from '../context/LanguageContext';
 import { Facebook, Chrome } from 'lucide-react';
 import styles from './Signup.module.css';
 
 export default function Signup() {
+    const navigate = useNavigate();
+    const { login } = useAuth();
+    const { t } = useLanguage();
     const [formData, setFormData] = useState({
         fullName: '',
         email: '',
@@ -23,20 +28,28 @@ export default function Signup() {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('Signup attempt:', formData);
-        // Add registration logic here
+
+        if (formData.password !== formData.confirmPassword) {
+            alert("Passwords don't match!");
+            return;
+        }
+
+        // Simulate successful registration and login
+        login({ name: formData.fullName, email: formData.email });
+        navigate('/dashboard');
     };
 
     return (
         <div className={styles.container}>
             <div className={styles.card}>
                 <div className={styles.header}>
-                    <h1 className={styles.title}>Create Account</h1>
-                    <p className={styles.subtitle}>Join our cooperative community today</p>
+                    <h1 className={styles.title}>{t('create_account')}</h1>
+                    <p className={styles.subtitle}>{t('join_community')}</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <div className={styles.inputGroup}>
-                        <label htmlFor="fullName" className={styles.label}>Full Name</label>
+                        <label htmlFor="fullName" className={styles.label}>{t('full_name')}</label>
                         <input
                             type="text"
                             id="fullName"
@@ -50,7 +63,7 @@ export default function Signup() {
                     </div>
 
                     <div className={styles.inputGroup}>
-                        <label htmlFor="email" className={styles.label}>Email Address</label>
+                        <label htmlFor="email" className={styles.label}>{t('email_label')}</label>
                         <input
                             type="email"
                             id="email"
@@ -58,13 +71,13 @@ export default function Signup() {
                             value={formData.email}
                             onChange={handleChange}
                             className={styles.input}
-                            placeholder="john@example.com"
+                            placeholder={t('enter_email')}
                             required
                         />
                     </div>
 
                     <div className={styles.inputGroup}>
-                        <label htmlFor="password" className={styles.label}>Password</label>
+                        <label htmlFor="password" className={styles.label}>{t('password_label')}</label>
                         <input
                             type="password"
                             id="password"
@@ -72,13 +85,13 @@ export default function Signup() {
                             value={formData.password}
                             onChange={handleChange}
                             className={styles.input}
-                            placeholder="Create a strong password"
+                            placeholder={t('create_password')}
                             required
                         />
                     </div>
 
                     <div className={styles.inputGroup}>
-                        <label htmlFor="confirmPassword" className={styles.label}>Confirm Password</label>
+                        <label htmlFor="confirmPassword" className={styles.label}>{t('confirm_password')}</label>
                         <input
                             type="password"
                             id="confirmPassword"
@@ -86,7 +99,7 @@ export default function Signup() {
                             value={formData.confirmPassword}
                             onChange={handleChange}
                             className={styles.input}
-                            placeholder="Confirm your password"
+                            placeholder={t('confirm_your_password')}
                             required
                         />
                     </div>
@@ -100,17 +113,17 @@ export default function Signup() {
                             required
                         />
                         <span>
-                            I agree to the <a href="#" className={styles.link}>Terms of Service</a> and <a href="#" className={styles.link}>Privacy Policy</a>
+                            {t('i_agree')} <a href="#" className={styles.link}>{t('terms')}</a> {t('and')} <a href="#" className={styles.link}>{t('privacy')}</a>
                         </span>
                     </label>
 
                     <button type="submit" className={styles.submitButton}>
-                        Create Account
+                        {t('create_account')}
                     </button>
                 </form>
 
                 <div className={styles.divider}>
-                    <span>Or sign up with</span>
+                    <span>{t('or_signup_with')}</span>
                 </div>
 
                 <div className={styles.socialLogin}>
@@ -125,9 +138,9 @@ export default function Signup() {
                 </div>
 
                 <div className={styles.footer}>
-                    Already have an account?{' '}
+                    {t('already_have_account')}{' '}
                     <Link to="/login" className={styles.link}>
-                        Sign in
+                        {t('sign_in')}
                     </Link>
                 </div>
             </div>

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
 import { Upload, X, ArrowLeft } from 'lucide-react';
 import styles from './PostAd.module.css';
 
 export default function PostAd() {
     const navigate = useNavigate();
+    const { t } = useLanguage();
     const [formData, setFormData] = useState({
         title: '',
         category: '',
@@ -38,14 +40,14 @@ export default function PostAd() {
 
             <div className={styles.card}>
                 <div className={styles.header}>
-                    <h1 className={styles.title}>Post a New Ad</h1>
-                    <p className={styles.subtitle}>Fill in the details to list your product on the marketplace.</p>
+                    <h1 className={styles.title}>{t('create_new_listing')}</h1>
+                    <p className={styles.subtitle}>{t('listing_subtitle')}</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <div className={styles.formSection}>
                         <div className={styles.inputGroup}>
-                            <label htmlFor="title" className={styles.label}>Product Title</label>
+                            <label htmlFor="title" className={styles.label}>{t('product_title')}</label>
                             <input
                                 type="text"
                                 id="title"
@@ -60,7 +62,7 @@ export default function PostAd() {
 
                         <div className={styles.row}>
                             <div className={styles.inputGroup}>
-                                <label htmlFor="category" className={styles.label}>Category</label>
+                                <label htmlFor="category" className={styles.label}>{t('category')}</label>
                                 <select
                                     id="category"
                                     name="category"
@@ -69,7 +71,7 @@ export default function PostAd() {
                                     className={styles.select}
                                     required
                                 >
-                                    <option value="">Select Category</option>
+                                    <option value="">{t('select_category')}</option>
                                     <option value="vegetables">Vegetables</option>
                                     <option value="fruits">Fruits</option>
                                     <option value="dairy">Dairy & Eggs</option>
@@ -79,7 +81,7 @@ export default function PostAd() {
                             </div>
 
                             <div className={styles.inputGroup}>
-                                <label htmlFor="price" className={styles.label}>Price (MAD)</label>
+                                <label htmlFor="price" className={styles.label}>{t('price')}</label>
                                 <input
                                     type="number"
                                     id="price"
@@ -96,7 +98,7 @@ export default function PostAd() {
                         </div>
 
                         <div className={styles.inputGroup}>
-                            <label htmlFor="unit" className={styles.label}>Unit</label>
+                            <label htmlFor="unit" className={styles.label}>{t('unit')}</label>
                             <select
                                 id="unit"
                                 name="unit"
@@ -114,7 +116,7 @@ export default function PostAd() {
 
                     <div className={styles.formSection}>
                         <div className={styles.inputGroup}>
-                            <label htmlFor="description" className={styles.label}>Description</label>
+                            <label htmlFor="description" className={styles.label}>{t('description')}</label>
                             <textarea
                                 id="description"
                                 name="description"
@@ -128,20 +130,20 @@ export default function PostAd() {
                     </div>
 
                     <div className={styles.formSection}>
-                        <label className={styles.label}>Product Image</label>
+                        <label className={styles.label}>{t('upload_images')}</label>
                         <div className={styles.uploadZone}>
                             <Upload size={32} className={styles.uploadIcon} />
-                            <p style={{ fontWeight: 500 }}>Click to upload image</p>
+                            <p style={{ fontWeight: 500 }}>{t('drag_drop')}</p>
                             <p style={{ fontSize: '0.8rem' }}>SVG, PNG, JPG or GIF (max. 3MB)</p>
                         </div>
                     </div>
 
                     <div className={styles.actions}>
                         <button type="button" onClick={() => navigate('/dashboard')} className={styles.cancelBtn}>
-                            Cancel
+                            {t('cancel')}
                         </button>
                         <button type="submit" className={styles.submitBtn}>
-                            Publish Ad
+                            {t('publish_ad')}
                         </button>
                     </div>
                 </form>

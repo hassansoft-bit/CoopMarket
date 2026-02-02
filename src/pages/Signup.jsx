@@ -75,7 +75,32 @@ export default function Signup() {
                             required
                         />
                     </div>
-
+                          <div className={styles.inputGroup}>
+                        <label htmlFor="cooperativeRegistrationNumber" className={styles.label}>{t('cooperative_registration_number')}</label>
+                        <input
+                            type="text"
+                            id="cooperativeRegistrationNumber"
+                            name="cooperativeRegistrationNumber"
+                            value={formData['cooperativeRegistrationNumber']}
+                            onChange={handleChange}
+                            className={styles.input}
+                            placeholder={t('enter_cooperative_registration_number')}
+                            required
+                        />
+                    </div>
+                    <div className={styles.inputGroup}>
+                        <label htmlFor="identifiantcommundel’entreprise" className={styles.label}>{t('identifiant_commun_de_l_entreprise')}</label>
+                        <input
+                            type="text"
+                            id="identifiantcommundel’entreprise"
+                            name="identifiantcommundel’entreprise"
+                            value={formData['identifiantcommundel’entreprise']}
+                            onChange={handleChange}
+                            className={styles.input}
+                            placeholder={t('enter_identifiant_commun_de_l_entreprise')}
+                            required
+                        />
+                    </div>
                     <div className={styles.inputGroup}>
                         <label htmlFor="password" className={styles.label}>{t('password_label')}</label>
                         <input
@@ -90,7 +115,8 @@ export default function Signup() {
                         />
                     </div>
 
-                    <div className={styles.inputGroup}>
+                    
+                     <div className={styles.inputGroup}>
                         <label htmlFor="confirmPassword" className={styles.label}>{t('confirm_password')}</label>
                         <input
                             type="password"
@@ -103,7 +129,6 @@ export default function Signup() {
                             required
                         />
                     </div>
-
                     <label className={styles.checkboxLabel}>
                         <input
                             type="checkbox"

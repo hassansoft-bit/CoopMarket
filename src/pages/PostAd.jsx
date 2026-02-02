@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import { useProducts } from '../context/ProductContext';
 import { Upload, X, ArrowLeft } from 'lucide-react';
 import styles from './PostAd.module.css';
 
 export default function PostAd() {
     const navigate = useNavigate();
     const { t } = useLanguage();
+    const { addProduct } = useProducts();
+    const fileInputRef = useRef(null);
     const [formData, setFormData] = useState({
         title: '',
         category: '',
@@ -15,6 +18,7 @@ export default function PostAd() {
         description: '',
         image: null
     });
+    const [previewUrl, setPreviewUrl] = useState(null);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -24,10 +28,56 @@ export default function PostAd() {
         }));
     };
 
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setFormData(prev => ({
+                ...prev,
+                image: file
+            }));
+            const url = URL.createObjectURL(file);
+            setPreviewUrl(url);
+        }
+    };
+
+    const handleRemoveImage = (e) => {
+        e.stopPropagation();
+        setFormData(prev => ({
+            ...prev,
+            image: null
+        }));
+        if (previewUrl) {
+            URL.revokeObjectURL(previewUrl);
+            setPreviewUrl(null);
+        }
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+        }
+    };
+
+    const handleUploadClick = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Publishing Ad:', formData);
-        // Simulate API call
+
+        const newProduct = {
+            id: Date.now(),
+            ...formData,
+            currency: 'MAD', // Default currency
+            image: previewUrl, // Storing blob URL for now. In real app, this would be a server URL.
+            seller: {
+                name: 'Current User', // Should come from AuthContext
+                type: 'Cooperative',
+                joined: new Date().getFullYear().toString()
+            }
+        };
+
+        addProduct(newProduct);
+        console.log('Publishing Ad:', newProduct);
         alert('Ad posted successfully! Returning to dashboard.');
         navigate('/dashboard');
     };
@@ -55,7 +105,7 @@ export default function PostAd() {
                                 value={formData.title}
                                 onChange={handleChange}
                                 className={styles.input}
-                                placeholder="e.g. Fresh Organic Tomatoes"
+                                placeholder="e.g. Natural Cooperative Products"
                                 required
                             />
                         </div>
@@ -72,11 +122,11 @@ export default function PostAd() {
                                     required
                                 >
                                     <option value="">{t('select_category')}</option>
-                                    <option value="vegetables">Vegetables</option>
-                                    <option value="fruits">Fruits</option>
-                                    <option value="dairy">Dairy & Eggs</option>
-                                    <option value="crafts">Handmade Crafts</option>
-                                    <option value="seeds">Seeds & Plants</option>
+                                    <option value="argan oil">Argan Oil</option>
+                                    <option value="honey">Honey</option>
+                                    <option value="carpet & rugs ">Carpet & Rugs</option>
+                                    <option value="pottery">Pottery</option>
+                                    <option value="spices">Spices</option>
                                 </select>
                             </div>
 
@@ -131,10 +181,54 @@ export default function PostAd() {
 
                     <div className={styles.formSection}>
                         <label className={styles.label}>{t('upload_images')}</label>
-                        <div className={styles.uploadZone}>
-                            <Upload size={32} className={styles.uploadIcon} />
-                            <p style={{ fontWeight: 500 }}>{t('drag_drop')}</p>
-                            <p style={{ fontSize: '0.8rem' }}>SVG, PNG, JPG or GIF (max. 3MB)</p>
+                        <input
+                            type="file"
+                            ref={fileInputRef}
+                            onChange={handleImageChange}
+                            style={{ display: 'none' }}
+                            accept="image/*"
+                        />
+                        <div
+                            className={styles.uploadZone}
+                            onClick={handleUploadClick}
+                            style={{ cursor: 'pointer', position: 'relative' }}
+                        >
+                            {previewUrl ? (
+                                <div style={{ position: 'relative', width: '100%', height: '200px' }}>
+                                    <img
+                                        src={previewUrl}
+                                        alt="Preview"
+                                        style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={handleRemoveImage}
+                                        style={{
+                                            position: 'absolute',
+                                            top: '10px',
+                                            right: '10px',
+                                            background: 'rgba(255, 0, 0, 0.7)',
+                                            color: 'white',
+                                            border: 'none',
+                                            borderRadius: '50%',
+                                            width: '24px',
+                                            height: '24px',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            cursor: 'pointer'
+                                        }}
+                                    >
+                                        <X size={16} />
+                                    </button>
+                                </div>
+                            ) : (
+                                <>
+                                    <Upload size={32} className={styles.uploadIcon} />
+                                    <p style={{ fontWeight: 500 }}>{t('drag_drop')}</p>
+                                    <p style={{ fontSize: '0.8rem' }}>SVG, PNG, JPG or GIF (max. 3MB)</p>
+                                </>
+                            )}
                         </div>
                     </div>
 
